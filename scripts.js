@@ -23,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 photo: photoData
             };
 
-            // Send the data to the server using a POST request
-            fetch('http://localhost:3000/api/missing-dogs', {
+            fetch('https://chasing-furries.onrender.com/api/missing-dogs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -34,18 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-
-                // Show success message
                 successMessage.classList.remove('d-none');
 
                 // Redirect to missing_furries.html after a delay
                 setTimeout(() => {
                     window.location.href = 'missing_furries.html';
-                }, 2000); // Adjust delay as needed
+                }, 2000);
             })
-            .catch(err => {
-                console.error('Error:', err);
-            });
+            .catch(err => console.error('Error:', err));
 
             missingDogForm.reset();
         };
@@ -77,8 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 photo: photoData
             };
 
-            // Send the data to the server using a POST request
-            fetch('http://localhost:3000/api/found-dogs', {
+            fetch('https://chasing-furries.onrender.com/api/found-dogs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -88,18 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-
-                // Show success message
                 successMessage.classList.remove('d-none');
 
                 // Redirect to found_furries.html after a delay
                 setTimeout(() => {
                     window.location.href = 'found_furries.html';
-                }, 2000); // Adjust delay as needed
+                }, 2000);
             })
-            .catch(err => {
-                console.error('Error:', err);
-            });
+            .catch(err => console.error('Error:', err));
 
             foundDogForm.reset();
         };
