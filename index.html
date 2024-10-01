@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chasing Furries</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Custom styles -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Chasing Furries</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Main Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="missing_furries.html">Missing Furries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="found_furries.html">Found Furries</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="bg-dark text-white text-center py-4">
+        <h1>Chasing Furries</h1>
+    </header>
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <section class="form-section bg-white p-4 rounded shadow-sm mb-4">
+                    <h2>Report Missing Furries</h2>
+                    <form id="missing-dog-form">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="breed">Breed:</label>
+                            <input type="text" class="form-control" id="breed" name="breed" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-seen">Last Seen:</label>
+                            <input type="text" class="form-control" id="last-seen" name="last-seen" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="missing-photo">Upload Photo:</label>
+                            <input type="file" class="form-control-file" id="missing-photo" name="missing-photo" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-success">Report Missing</button>
+                    </form>
+                </section>
+            </div>
+
+            <div class="col-md-6">
+                <section class="form-section bg-white p-4 rounded shadow-sm mb-4">
+                    <h2>Report Found Furries</h2>
+                    <form id="found-dog-form">
+                        <div class="form-group">
+                            <label for="found-name">Name:</label>
+                            <input type="text" class="form-control" id="found-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="found-breed">Breed:</label>
+                            <input type="text" class="form-control" id="found-breed" name="breed" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="found-location">Found Location:</label>
+                            <input type="text" class="form-control" id="found-location" name="found-location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="found-photo">Upload Photo:</label>
+                            <input type="file" class="form-control-file" id="found-photo" name="found-photo" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Report Found</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="success-message" class="alert alert-success d-none" role="alert">
+            Successfully submitted information. Thank you for helping these Furries!
+        </div>
+
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 Chasing Furries</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

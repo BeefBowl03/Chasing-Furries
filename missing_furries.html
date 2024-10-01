@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Furries</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Custom styles -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.html">Chasing Furries</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Main Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="missing_furries.html">Missing Furries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="found_furries.html">Found Furries</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="bg-dark text-white text-center py-4">
+        <h1>Chasing Furries</h1>
+    </header>
+
+    <main class="container my-5">
+        <input type="text" id="search-bar" class="form-control mb-3" placeholder="Search Missing Furries...">
+
+        <div id="missing-dog-list" class="list-group">
+            <!-- Missing dogs will be listed here -->
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 Chasing Furries</p>
+    </footer>
+
+    <!-- Modal for "Report as Found" -->
+    <div class="modal fade" id="report-found-modal" tabindex="-1" role="dialog" aria-labelledby="reportFoundModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportFoundModalLabel">Report as Found</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="report-found-form">
+                        <div class="form-group">
+                            <label for="found-name">Name:</label>
+                            <input type="text" class="form-control" id="found-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="found-breed">Breed:</label>
+                            <input type="text" class="form-control" id="found-breed" name="breed" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="found-location">Found Location:</label>
+                            <input type="text" class="form-control" id="found-location" name="found-location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="found-photo">Upload Photo:</label>
+                            <input type="file" class="form-control-file" id="found-photo" name="found-photo" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Report Found</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="missing_furries.js"></script>
+</body>
+</html>
