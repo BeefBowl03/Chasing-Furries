@@ -8,7 +8,11 @@ const port = 3000;
 
 // Middleware
 app.use(bodyParser.json({ limit: '10mb' })); // To handle large base64 images
-app.use(cors());
+app.use(cors({
+    origin: 'https://chasing-furries.tiiny.site/index.html', // Replace with your actual frontend URL
+    methods: ['GET', 'POST'],
+    credentials: true,
+}));
 
 // MongoDB connection URI
 const uri = "mongodb+srv://BeefBowl:Laurenzo%403@beefbowl.zw2kp.mongodb.net/?retryWrites=true&w=majority&appName=BeefBowl";
