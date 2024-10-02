@@ -43,25 +43,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchMissingDogs = async () => {
         try {
             const response = await fetch('https://chasing-furries.onrender.com/api/missing-dogs');
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
-            displayMissingDogs(data);
+            return data; // Return data for further processing
         } catch (err) {
             console.error('Error fetching missing dogs:', err);
+            return []; // Return an empty array on error
         }
     };
 
-    fetchMissingDogs();
+    // Initialize by fetching missing dogs
+    const init = async () => {
+        const missingDogs = await fetchMissingDogs();
+        displayMissingDogs(missingDogs);
+    };
+
+    init();
 
     // Handle search functionality
-    searchBar.addEventListener('input', () => {
+    searchBar.addEventListener('input', async () => {
         const searchTerm = searchBar.value.toLowerCase();
-        fetchMissingDogs().then((missingDogs) => {
-            const filteredDogs = missingDogs.filter(dog =>
-                dog.name.toLowerCase().includes(searchTerm) ||
-                dog.breed.toLowerCase().includes(searchTerm)
-            );
-            displayMissingDogs(filteredDogs);
-        });
+        const missingDogs = await fetchMissingDogs(); // Fetch dogs each time for updated data
+        const filteredDogs = missingDogs.filter(dog =>
+            dog.name.toLowerCase().includes(searchTerm) ||
+            dog.breed.toLowerCase().includes(searchTerm)
+        );
+        displayMissingDogs(filteredDogs);
     });
 
     // Handle "Report as Found" button clicks

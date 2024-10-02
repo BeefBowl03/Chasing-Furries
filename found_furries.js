@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchFoundDogs = async () => {
         try {
             const response = await fetch('https://chasing-furries.onrender.com/api/found-dogs');
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
             displayFoundDogs(data);
         } catch (err) {
@@ -51,8 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle search functionality
     searchBar.addEventListener('input', async () => {
         const searchTerm = searchBar.value.toLowerCase();
-        const response = await fetch('https://chasing-furries.onrender.com/api/found-dogs');
-        const foundDogs = await response.json();
+        const foundDogs = await fetchFoundDogs(); // Fetch dogs for updated data
         const filteredDogs = foundDogs.filter(dog =>
             dog.name.toLowerCase().includes(searchTerm) ||
             dog.breed.toLowerCase().includes(searchTerm)
@@ -68,23 +68,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Confirm ownership
-    confirmOwnerButton.addEventListener('click', () => {
+    confirmOwnerButton.addEventListener('click', async () => {
         if (currentIndex !== undefined) {
-            fetch('https://chasing-furries.onrender.com/api/found-dogs', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ index: currentIndex }) // Send the index of the found dog to be removed
-            })
-            .then(response => {
+            try {
+                const response = await fetch('https://chasing-furries.onrender.com/api/found-dogs', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ index: currentIndex }) // Send the index of the found dog to be removed
+                });
                 if (response.ok) {
                     $('#owner-modal').modal('hide');
                     fetchFoundDogs(); // Refresh the list of found dogs
                 } else {
                     console.error('Failed to confirm ownership.');
                 }
-            });
+            } catch (err) {
+                console.error('Error confirming ownership:', err);
+            }
         }
     });
 });
