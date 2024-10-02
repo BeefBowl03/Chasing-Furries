@@ -6,11 +6,10 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000;
 
-
 // Middleware
 app.use(bodyParser.json({ limit: '10mb' })); // To handle large base64 images
 app.use(cors({
-    origin: 'https://chasing-furries.tiiny.site/index.html', // Replace with your actual frontend URL
+    origin: 'https://chasing-furries.tiiny.site', // Update to allow the frontend URL without index.html
     methods: ['GET', 'POST'],
     credentials: true,
 }));
