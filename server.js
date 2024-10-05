@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json({ limit: '10mb' })); // To handle large base64 images
 app.use(cors({
-    origin: 'https://chasing-furries.tiiny.site', // Update to allow the frontend URL without index.html
+    origin: ['https://chasing-furries.tiiny.site', 'https://beefbowl03.github.io'], // Allow multiple origins
     methods: ['GET', 'POST'],
     credentials: true,
 }));
