@@ -77,12 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmOwnerButton.addEventListener('click', async () => {
         if (currentDogId) {
             try {
-                const response = await fetch('https://chasing-furries.onrender.com/api/found-dogs', {
+                const response = await fetch(`https://chasing-furries.onrender.com/api/found-dogs/${currentDogId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ id: currentDogId })
+                    }
                 });
                 if (response.ok) {
                     $('#owner-modal').modal('hide'); // Hide modal

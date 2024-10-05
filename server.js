@@ -106,18 +106,18 @@ async function run() {
             }
         });
 
-        // Route to delete a found dog
-        app.delete('/api/found-dogs', async (req, res) => {
-            const { id } = req.body; // Get the unique ID from the request body
+        // Route to delete a found dog by ID
+        app.delete('/api/found-dogs/:id', async (req, res) => {
+            const { id } = req.params; // Get the unique ID from the URL parameters
             try {
-                const result = await missingDogsCollection.deleteOne({ _id: new ObjectId(id) });
+                const result = await foundDogsCollection.deleteOne({ _id: new ObjectId(id) }); // Use the correct collection
                 if (result.deletedCount === 1) {
                     res.status(200).json({ message: 'Found dog removed' });
                 } else {
                     res.status(404).json({ message: 'Found dog not found' });
                 }
             } catch (err) {
-                console.error('Error removing missing dog:', err); // Added for better error tracking
+                console.error('Error removing found dog:', err); // Added for better error tracking
                 res.status(500).json({ message: 'Failed to remove found dog', error: err });
             }
         });
@@ -137,8 +137,6 @@ async function run() {
                 res.status(500).json({ message: 'Failed to remove missing dog', error: err });
             }
         });
-
-
 
         app.listen(port, () => {
             console.log(`Server running on http://localhost:${port}`);
