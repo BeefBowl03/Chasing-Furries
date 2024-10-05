@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 foundLocation: reportFoundLocation.value,
                 photo: reportFoundPhoto.files.length > 0 ? await uploadPhoto(reportFoundPhoto.files[0]) : ''
             };
-
+    
             try {
                 const response = await fetch('https://chasing-furries.onrender.com/api/found-dogs', {
                     method: 'POST',
@@ -103,8 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(foundDog)
                 });
                 if (response.ok) {
-                    // Remove the missing dog from the database
-                    await fetch(`https://chasing-furries.onrender.com/api/missing-dogs/${currentIndex}`, {
+                    // Get the ID of the missing dog from the original list
+                    const missingDogs = await fetchMissingDogs(); // Get the current missing dogs
+                    const dogId = missingDogs[currentIndex]._id; // Get the ID of the missing dog
+                    // Delete the missing dog by its ID
+                    await fetch(`https://chasing-furries.onrender.com/api/missing-dogs/${dogId}`, {
                         method: 'DELETE'
                     });
                     $('#report-found-modal').modal('hide');

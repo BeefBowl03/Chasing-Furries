@@ -121,6 +121,22 @@ async function run() {
             }
         });
 
+        // Route to delete a missing dog by ID
+        app.delete('/api/missing-dogs/:id', async (req, res) => {
+            const { id } = req.params; // Get the unique ID from the URL parameters
+            try {
+                const result = await missingDogsCollection.deleteOne({ _id: new MongoClient.ObjectId(id) });
+                if (result.deletedCount === 1) {
+                    res.status(200).json({ message: 'Missing dog removed' });
+                } else {
+                    res.status(404).json({ message: 'Missing dog not found' });
+                }
+            } catch (err) {
+                res.status(500).json({ message: 'Failed to remove missing dog', error: err });
+            }
+        });
+
+
         app.listen(port, () => {
             console.log(`Server running on http://localhost:${port}`);
         });
