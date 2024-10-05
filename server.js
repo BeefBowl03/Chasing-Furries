@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs'); // Import the fs module
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const app = express();
@@ -13,6 +16,25 @@ app.use(cors({
     methods: ['GET', 'POST'],
     credentials: true,
 }));
+
+// Create uploads directory if it doesn't exist
+const uploadsDir = path.join(__dirname, 'uploads'); // Path to uploads directory
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir); // Create the uploads directory
+}
+
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadsDir); // Save to the uploads directory
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname)); // Save file with unique name
+    }
+});
+
+const upload = multer({ storage: storage });
 
 // MongoDB connection URI
 const uri = "mongodb+srv://BeefBowl:Laurenzo%403@beefbowl.zw2kp.mongodb.net/?retryWrites=true&w=majority&appName=BeefBowl";
@@ -39,9 +61,10 @@ async function run() {
         });
 
         // Route to handle missing dog form submission
-        app.post('/api/missing-dogs', async (req, res) => {
+        app.post('/api/missing-dogs', upload.single('photo'), async (req, res) => {
             try {
-                const { name, breed, lastSeen, photo } = req.body;
+                const { name, breed, lastSeen } = req.body;
+                const photo = req.file ? req.file.path : null; // Get the path to the uploaded photo
                 const missingDogData = { name, breed, lastSeen, photo };
                 await missingDogsCollection.insertOne(missingDogData);
                 res.status(201).json({ message: 'Missing dog report saved successfully!' });
@@ -57,6 +80,19 @@ async function run() {
                 res.status(200).json(missingDogs);
             } catch (err) {
                 res.status(500).json({ message: 'Failed to fetch missing dog reports', error: err });
+            }
+        });
+
+        // Route to handle found dog form submission
+        app.post('/api/found-dogs', upload.single('photo'), async (req, res) => {
+            try {
+                const { name, breed, foundLocation } = req.body;
+                const photo = req.file ? req.file.path : null; // Get the path to the uploaded photo
+                const foundDogData = { name, breed, foundLocation, photo };
+                await foundDogsCollection.insertOne(foundDogData);
+                res.status(201).json({ message: 'Found dog report saved successfully!' });
+            } catch (err) {
+                res.status(500).json({ message: 'Failed to save found dog report', error: err });
             }
         });
 
@@ -82,21 +118,6 @@ async function run() {
                 }
             } catch (err) {
                 res.status(500).json({ message: 'Failed to remove found dog', error: err });
-            }
-        });
-
-
-
-
-        // Route to handle found dog form submission
-        app.post('/api/found-dogs', async (req, res) => {
-            try {
-                const { name, breed, foundLocation, photo } = req.body;
-                const foundDogData = { name, breed, foundLocation, photo };
-                await foundDogsCollection.insertOne(foundDogData);
-                res.status(201).json({ message: 'Found dog report saved successfully!' });
-            } catch (err) {
-                res.status(500).json({ message: 'Failed to save found dog report', error: err });
             }
         });
 
