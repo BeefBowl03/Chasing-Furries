@@ -50,6 +50,39 @@ async function run() {
             }
         });
 
+        // Route to get all missing dog reports
+        app.get('/api/missing-dogs', async (req, res) => {
+            try {
+                const missingDogs = await missingDogsCollection.find().toArray();
+                res.status(200).json(missingDogs);
+            } catch (err) {
+                res.status(500).json({ message: 'Failed to fetch missing dog reports', error: err });
+            }
+        });
+
+        // Route to get all found dog reports
+        app.get('/api/found-dogs', async (req, res) => {
+            try {
+                const foundDogs = await foundDogsCollection.find().toArray();
+                res.status(200).json(foundDogs);
+            } catch (err) {
+                res.status(500).json({ message: 'Failed to fetch found dog reports', error: err });
+            }
+        });
+
+        // Route to delete a found dog
+        app.delete('/api/found-dogs', async (req, res) => {
+            const { index } = req.body; // Assuming you send the index or a unique identifier for the dog
+            try {
+                await foundDogsCollection.deleteOne({ /* your criteria, e.g., { name: dogName } */ });
+                res.status(200).json({ message: 'Found dog removed' });
+            } catch (err) {
+                res.status(500).json({ message: 'Failed to remove found dog', error: err });
+            }
+        });
+
+
+
         // Route to handle found dog form submission
         app.post('/api/found-dogs', async (req, res) => {
             try {

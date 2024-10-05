@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-
     // Initialize by fetching missing dogs
     const init = async () => {
         const missingDogs = await fetchMissingDogs();
@@ -118,5 +117,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
 });
