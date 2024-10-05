@@ -4,7 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs'); // Import the fs module
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ObjectId, ServerApiVersion } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -110,13 +110,14 @@ async function run() {
         app.delete('/api/found-dogs', async (req, res) => {
             const { id } = req.body; // Get the unique ID from the request body
             try {
-                const result = await foundDogsCollection.deleteOne({ _id: new MongoClient.ObjectId(id) }); // Use the unique identifier
+                const result = await missingDogsCollection.deleteOne({ _id: new ObjectId(id) });
                 if (result.deletedCount === 1) {
                     res.status(200).json({ message: 'Found dog removed' });
                 } else {
                     res.status(404).json({ message: 'Found dog not found' });
                 }
             } catch (err) {
+                console.error('Error removing missing dog:', err); // Added for better error tracking
                 res.status(500).json({ message: 'Failed to remove found dog', error: err });
             }
         });
@@ -125,16 +126,18 @@ async function run() {
         app.delete('/api/missing-dogs/:id', async (req, res) => {
             const { id } = req.params; // Get the unique ID from the URL parameters
             try {
-                const result = await missingDogsCollection.deleteOne({ _id: new MongoClient.ObjectId(id) });
+                const result = await missingDogsCollection.deleteOne({ _id: new ObjectId(id) }); // Corrected here
                 if (result.deletedCount === 1) {
                     res.status(200).json({ message: 'Missing dog removed' });
                 } else {
                     res.status(404).json({ message: 'Missing dog not found' });
                 }
             } catch (err) {
+                console.error('Error removing missing dog:', err); // Added for better error tracking
                 res.status(500).json({ message: 'Failed to remove missing dog', error: err });
             }
         });
+
 
 
         app.listen(port, () => {
