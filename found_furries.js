@@ -40,12 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('https://chasing-furries.onrender.com/api/found-dogs');
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            const data = await response.json();
-            displayFoundDogs(data);
+            return await response.json(); // Return data for filtering
         } catch (err) {
             console.error('Error fetching found dogs:', err);
+            return []; // Return an empty array on error
         }
     };
+
 
     fetchFoundDogs();
 
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         displayFoundDogs(filteredDogs);
     });
+
 
     // Handle "I'm the Owner" button clicks
     foundDogList.addEventListener('click', (e) => {

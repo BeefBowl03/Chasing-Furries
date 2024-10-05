@@ -44,13 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('https://chasing-furries.onrender.com/api/missing-dogs');
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            const data = await response.json();
-            return data; // Return data for further processing
+            return await response.json(); // Return data for filtering
         } catch (err) {
             console.error('Error fetching missing dogs:', err);
             return []; // Return an empty array on error
         }
     };
+
 
     // Initialize by fetching missing dogs
     const init = async () => {
@@ -85,25 +85,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Handle "Report as Found" form submission
-    reportFoundForm.addEventListener('submit', (e) => {
+    reportFoundForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (currentIndex !== undefined) {
             const foundDog = {
                 name: reportFoundName.value,
                 breed: reportFoundBreed.value,
                 foundLocation: reportFoundLocation.value,
-                photo: reportFoundPhoto.files.length > 0 ? URL.createObjectURL(reportFoundPhoto.files[0]) : ''
+                photo: reportFoundPhoto.files.length > 0 ? await uploadPhoto(reportFoundPhoto.files[0]) : ''
             };
-            let foundDogs = JSON.parse(localStorage.getItem('foundDogs')) || [];
-            foundDogs.push(foundDog);
-            localStorage.setItem('foundDogs', JSON.stringify(foundDogs));
 
-            // Remove the missing dog from localStorage
-            let missingDogs = JSON.parse(localStorage.getItem('missingDogs')) || [];
-            missingDogs.splice(currentIndex, 1);
-            localStorage.setItem('missingDogs', JSON.stringify(missingDogs));
-            $('#report-found-modal').modal('hide');
-            displayMissingDogs(missingDogs);
+            try {
+                const response = await fetch('https://chasing-furries.onrender.com/api/found-dogs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(foundDog)
+                });
+                if (response.ok) {
+                    // Remove the missing dog from the database
+                    await fetch(`https://chasing-furries.onrender.com/api/missing-dogs/${currentIndex}`, {
+                        method: 'DELETE'
+                    });
+                    $('#report-found-modal').modal('hide');
+                    displayMissingDogs(await fetchMissingDogs());
+                } else {
+                    console.error('Failed to report found dog.');
+                }
+            } catch (err) {
+                console.error('Error reporting found dog:', err);
+            }
         }
     });
+
 });

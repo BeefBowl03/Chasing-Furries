@@ -3,16 +3,18 @@
   "version": "1.0.0",
   "main": "found_furries.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "��#\u0000 \u0000C\u0000h\u0000a\u0000s\u0000i\u0000n\u0000g\u0000-\u0000F\u0000u\u0000r\u0000r\u0000i\u0000e\u0000s\u0000\r\u0000 \u0000",
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "mongodb": "^6.9.0"
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.0"
   }
 }
