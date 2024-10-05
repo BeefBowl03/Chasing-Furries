@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Confirm ownership
+    // Modal button for confirming ownership
     confirmOwnerButton.addEventListener('click', async () => {
         if (currentDogId) {
             try {
@@ -82,11 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ id: currentDogId }) // Send the unique ID of the found dog to be removed
+                    body: JSON.stringify({ id: currentDogId })
                 });
                 if (response.ok) {
-                    $('#owner-modal').modal('hide');
-                    init(); // Refresh the list of found dogs
+                    $('#owner-modal').modal('hide'); // Hide modal
+                    init(); // Refresh list
                 } else {
                     console.error('Failed to confirm ownership.');
                 }
@@ -95,4 +95,5 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
 });

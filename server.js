@@ -72,14 +72,19 @@ async function run() {
 
         // Route to delete a found dog
         app.delete('/api/found-dogs', async (req, res) => {
-            const { index } = req.body; // Assuming you send the index or a unique identifier for the dog
+            const { id } = req.body; // Get the unique ID from the request body
             try {
-                await foundDogsCollection.deleteOne({ /* your criteria, e.g., { name: dogName } */ });
-                res.status(200).json({ message: 'Found dog removed' });
+                const result = await foundDogsCollection.deleteOne({ _id: new MongoClient.ObjectId(id) }); // Use the unique identifier
+                if (result.deletedCount === 1) {
+                    res.status(200).json({ message: 'Found dog removed' });
+                } else {
+                    res.status(404).json({ message: 'Found dog not found' });
+                }
             } catch (err) {
                 res.status(500).json({ message: 'Failed to remove found dog', error: err });
             }
         });
+
 
 
 
