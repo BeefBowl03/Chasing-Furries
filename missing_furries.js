@@ -75,13 +75,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.classList.contains('btn-primary')) {
             currentIndex = e.target.getAttribute('data-index');
             const missingDogs = JSON.parse(localStorage.getItem('missingDogs')) || [];
-            const dog = missingDogs[currentIndex];
-            reportFoundName.value = dog.name;
-            reportFoundBreed.value = dog.breed;
-            reportFoundLocation.value = ''; // Empty field for location
-            reportFoundPhoto.value = ''; // Empty field for photo
+    
+            // Check if currentIndex is valid
+            if (currentIndex >= 0 && currentIndex < missingDogs.length) {
+                const dog = missingDogs[currentIndex];
+                reportFoundName.value = dog.name || ''; // Fallback to empty string
+                reportFoundBreed.value = dog.breed || ''; // Fallback to empty string
+                reportFoundLocation.value = ''; // Empty field for location
+                reportFoundPhoto.value = ''; // Empty field for photo
+            } else {
+                console.error('Invalid index:', currentIndex);
+            }
         }
     });
+    
 
     // Handle "Report as Found" form submission
     reportFoundForm.addEventListener('submit', async (e) => {
